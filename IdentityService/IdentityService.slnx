@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="IdentityService.API/IdentityService.API.csproj" />
+  <Project Path="IdentityService.Application.Tests/IdentityService.Application.Tests.csproj" />
+  <Project Path="IdentityService.Application/IdentityService.Application.csproj" />
+  <Project Path="IdentityService.Domain.Tests/IdentityService.Domain.Tests.csproj" />
+  <Project Path="IdentityService.Domain/IdentityService.Domain.csproj" />
+  <Project Path="IdentityService.Infrastructure/IdentityService.Infrastructure.csproj" Id="1936af54-7338-4b98-bd99-c46240b6d5db" />
+  <Project Path="IdentityService.Integration.Tests/IdentityService.Integration.Tests.csproj" />
+</Solution>

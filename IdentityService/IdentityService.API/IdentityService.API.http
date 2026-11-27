@@ -1,0 +1,11 @@
+@IdentityService.API_HostAddress = http://localhost:5088
+
+GET {{IdentityService.API_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+
+GET {{IdentityService.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

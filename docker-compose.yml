@@ -1,0 +1,111 @@
+services:
+  api:
+    image: api:latest
+
+    ports:
+      - "5004:8081"
+
+    deploy:
+      restart_policy:
+        condition: any
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8081
+
+      SqlServer__Host: sqlserver2022,1433
+      SqlServer__Database: IdentityService_Db
+      SqlServer__UserName__File: /run/secrets/sql_sa_user_name
+      SqlServer__Password__File: /run/secrets/sql_sa_password
+
+      Jwt__Key__File: /run/secrets/jwt_key
+      Jwt__Issuer: IdentityService.API
+      Jwt__Audience: IdentityService.API
+      Jwt__ExpireMinutes: 15
+
+      RabbitMq__Host: rabbitmq
+      RabbitMq__Port: 5672
+      RabbitMq__UserName__File: /run/secrets/rabbitmq_user_name
+      RabbitMq__Password__File: /run/secrets/rabbitmq_password
+
+      RabbitMq__ExchangeName: email_exchange
+      RabbitMq__QueueName: fila_emails
+      RabbitMq__DeadLetterExchange: dlx_exchange
+      RabbitMq__DeadLetterQueue: fila_emails_erro
+
+      AdminSettings__UserName__File: /run/secrets/admin_user_name
+      AdminSettings__Email: admin@identityservice.com
+      AdminSettings__Password__File: /run/secrets/admin_password
+
+      OwnerCompany__RazaoSocial: Sistema Syst
+      OwnerCompany__Fantasia: Syst
+      OwnerCompany__Cnpj: 44764428000100
+      OwnerCompany__TipoTenancy: Master
+      OwnerCompany__Nome: Sistema
+      OwnerCompany__Celular: 62999999999
+      OwnerCompany__Email: admin@gmail.com
+      OwnerCompany__SmtpHost: smtp.gmail.com
+      OwnerCompany__SmtpPort: 587
+      OwnerCompany__Cep: 74843140
+      OwnerCompany__Uf: GO
+      OwnerCompany__Cidade: Goiania
+      OwnerCompany__Endereco: Endereco Padrao
+      OwnerCompany__Bairro: Centro
+
+      Cors__AllowedOrigins: "http://localhost:3000,https://localhost:3000,http://condominio_front_react:3000,http://localhost:4200,https://localhost:4200,http://condominio_front_angular:4200"
+
+      Logging__LogLevel__Default: Information
+      Logging__LogLevel__Microsoft: Warning
+
+    secrets:
+      - smtp_password_app
+      - sql_sa_user_name
+      - sql_sa_password
+      - jwt_key
+      - rabbitmq_user_name
+      - rabbitmq_password
+      - admin_user_name
+      - admin_password
+
+    volumes:
+      - ./keys:/home/app/.aspnet/DataProtection-Keys
+
+    networks:
+      - infra_net
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8081/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+secrets:
+  smtp_password_app:
+    external: true
+
+  jwt_key:
+    external: true
+
+  sql_sa_user_name:
+    external: true
+
+  sql_sa_password:
+    external: true
+
+  rabbitmq_password:
+    external: true
+
+  rabbitmq_user_name:
+    external: true
+
+  admin_password:
+    external: true
+
+  admin_user_name:
+    external: true
+
+networks:
+  infra_net:
+    external: true
+    name: infra_net

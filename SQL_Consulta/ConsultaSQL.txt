@@ -1,0 +1,2 @@
+SELECT * FROM IdentityService_Db.dbo.Tenancy
+SELECT * FROM IdentityService_Db.dbo.AuthUsers
